@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.List;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
@@ -13,9 +14,7 @@ public class clasesita {
     ObjectId id;
     int idClase;
     String nombreClase;
-    ArrayList<Examen> tests = new ArrayList();
-    
-    
+    List<Examen> tests = new ArrayList<>();
 
     public clasesita(String nombreClase) {
         this.nombreClase = nombreClase;
@@ -25,21 +24,18 @@ public class clasesita {
         this.idClase = idClase;
         this.nombreClase = nombreClase;
     }
-    
-    
 
     public clasesita() {
     }
 
-    public ArrayList<Examen> getTests() {
+    public List<Examen> getTests() {
         return tests;
     }
 
-    public void setTests(ArrayList<Examen> tests) {
+    public void setTests(List<Examen> tests) {
         this.tests = tests;
     }
-    
-   
+
     public ObjectId getId() {
         return id;
     }
@@ -64,13 +60,13 @@ public class clasesita {
         this.idClase = idClase;
     }
 
+    public void addExamen(Examen exa) {
+        tests.add(exa);
+    }
+
     @Override
     public String toString() {
-        return "clasesita{" + "id=" + id + ", idClase=" + idClase + ", nombreClase=" + nombreClase + '}';
+        return "clasesita{" + "id=" + id + ", idClase=" + idClase + ", nombreClase=" + nombreClase + ", tests=" + tests + '}';
     }
-    
-    
-
-   
 
 }

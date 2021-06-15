@@ -18,9 +18,11 @@ import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.gte;
 import static com.mongodb.client.model.Filters.lt;
 import static com.mongodb.client.model.Filters.lte;
+import com.mongodb.client.model.FindOneAndReplaceOptions;
 import static com.mongodb.client.model.Projections.excludeId;
 import static com.mongodb.client.model.Projections.fields;
 import static com.mongodb.client.model.Projections.include;
+import com.mongodb.client.model.ReturnDocument;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.security.MessageDigest;
@@ -37,6 +39,7 @@ import org.bson.conversions.Bson;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.AEADBadTagException;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -52,6 +55,8 @@ public class principal extends javax.swing.JFrame {
     MongoCollection<Examen> Exams;
     MongoCollection<Nota> notas;
     Query k;
+
+    clasesita claseSeleccionada = null;
 
     ArrayList<String> coleccion = new ArrayList();
     ArrayList<Alumno> alumnoos = new ArrayList();
@@ -170,8 +175,8 @@ public class principal extends javax.swing.JFrame {
         cb_examen = new javax.swing.JComboBox<>();
         jLabel21 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
-        jSeleccionFecha = new com.toedter.calendar.JDateChooser();
         jLabel44 = new javax.swing.JLabel();
+        jSeleccionFecha = new com.toedter.calendar.JDateChooser();
         btn_cerrarSesion = new javax.swing.JButton();
         btn_mostrardatosAdmiin = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -386,15 +391,12 @@ public class principal extends javax.swing.JFrame {
 
         jLabel40.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
         jLabel40.setText("Seleccione la fecha para el examen");
-        jPanel3.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 170, 20));
-
-        jSeleccionFecha.setDateFormatString("dd/MM/yyyy ");
-        jSeleccionFecha.setMinSelectableDate(new java.util.Date(-62135744340000L));
-        jPanel3.add(jSeleccionFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, 140, 30));
+        jPanel3.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 190, 20));
 
         jLabel44.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
         jLabel44.setText("Seleccione una clase");
         jPanel3.add(jLabel44, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 120, 20));
+        jPanel3.add(jSeleccionFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 170, 30));
 
         crear.addTab("CREAR EXAMEN", jPanel3);
 
@@ -1064,7 +1066,7 @@ public class principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_guardarClaseMouseClicked
 
     private void btn_crearExamenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_crearExamenMouseClicked
-        if (j_idExamen.getText().equals("") || j_cantP.getText().equals("")) {
+        if (j_idExamen.getText().equals("") || j_cantP.getText().equals("") || jSeleccionFecha == null) {
             JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos");
         } else {
 
@@ -1103,15 +1105,35 @@ public class principal extends javax.swing.JFrame {
                         Examen exs = new Examen(idExamen, clasess.get(idClasee).getIdClase(), cantPreg, fechaExa);
 
                         clasess.get(cb_examen.getSelectedIndex()).getTests().add(exs);
-
                         for (int i = 0; i < clasess.get(cb_examen.getSelectedIndex()).getTests().size(); i++) {
                             System.out.println("examenes pertenecientes a esta clase jeje" + clasess.get(cb_examen.getSelectedIndex()).getTests().get(i).getIdExamen());
                         }
                         Exams.insertOne(exs);
+                        claseSeleccionada = Clase.find(eq("idClase", clasess.get(cb_examen.getSelectedIndex()).getIdClase())).first();
+//                        claseSeleccionada.idClase = clasess.get(cb_examen.getSelectedIndex()).getIdClase();
+                        JOptionPane.showMessageDialog(null, claseSeleccionada);
+                        claseSeleccionada.addExamen(exs);
+                        System.out.println(claseSeleccionada);
+                        claseSeleccionada = Clase.findOneAndReplace(eq("idClase", clasess.get(cb_examen.getSelectedIndex()).getIdClase()),
+                                claseSeleccionada, new FindOneAndReplaceOptions().returnDocument(ReturnDocument.AFTER));
+                        JOptionPane.showMessageDialog(null, claseSeleccionada);
+//                        claseSeleccionada.getTests().add(exs);
+                        //Clase.aggregate(clasess.get(cb_examen.getSelectedIndex()).getTests().add(exs));
+
                         // clasesita cl = new Examen(idExamen, idClasee, CantidadPreguntas);
                         //Clase.insertOne(cl);
                         //clasess.add(cl);
-
+                        //ex = Exams.findOneAndReplace(eq("idclase",clasess.get(cb_examen.getSelectedIndex()).getIdClase()), ex, new FindOneAndReplaceOptions().returnDocument(ReturnDocument.AFTER));
+                        //JOptionPane.showMessageDialog(null,ex);
+//                        Document updateArray = new Document();
+//                        updateArray.append("$set", new BasicDBObject("tests", exs));
+//                        // updateArray.put("tests", exs);
+//                        BasicDBObject buscaPorId = new BasicDBObject();
+//                        buscaPorId.append("idClase", clasess.get(cb_examen.getSelectedIndex()).getIdClase());
+//
+//                        //Actualiza la clase y el array de examen
+//                        //db.getCollection("Clase").updateMany(buscaPorId, updateArray);
+//                        db.getCollection("Clase").insertOne(updateArray);
                         //Clase.insertOne(cla);
                         JOptionPane.showMessageDialog(null, "Examen creado con éxito");
                         j_idExamen.setText("");
