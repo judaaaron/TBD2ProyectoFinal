@@ -40,6 +40,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.AEADBadTagException;
+import javax.swing.event.ListDataListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -135,6 +136,7 @@ public class principal extends javax.swing.JFrame {
 //        for (int i = 0; i < notes.size(); i++) {
 //            System.out.println(notes.get(i).getIdAlumno() + " este es de notas");
 //        }
+
     }
 
     /**
@@ -187,8 +189,11 @@ public class principal extends javax.swing.JFrame {
         jLabel23 = new javax.swing.JLabel();
         cb_examenAlumno = new javax.swing.JComboBox<>();
         btn_comenzar = new javax.swing.JButton();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        j_examenes = new javax.swing.JList<>();
         btn_verExamenes = new javax.swing.JButton();
         btn_singoutA = new javax.swing.JButton();
+        jLabel45 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         registrar = new javax.swing.JDialog();
@@ -446,13 +451,13 @@ public class principal extends javax.swing.JFrame {
         Estudiantes.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel23.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
-        jLabel23.setText("Seleccione la clase para hacer el examen");
-        Estudiantes.getContentPane().add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 220, 30));
+        jLabel23.setText("Seleccione el examen");
+        Estudiantes.getContentPane().add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 60, 110, 30));
 
         cb_examenAlumno.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
-        cb_examenAlumno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cb_examenAlumnoActionPerformed(evt);
+        cb_examenAlumno.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cb_examenAlumnoItemStateChanged(evt);
             }
         });
         Estudiantes.getContentPane().add(cb_examenAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 190, -1));
@@ -467,7 +472,12 @@ public class principal extends javax.swing.JFrame {
                 btn_comenzarMouseClicked(evt);
             }
         });
-        Estudiantes.getContentPane().add(btn_comenzar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, 170, 40));
+        Estudiantes.getContentPane().add(btn_comenzar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 80, 170, 40));
+
+        j_examenes.setModel(new DefaultListModel());
+        jScrollPane8.setViewportView(j_examenes);
+
+        Estudiantes.getContentPane().add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 90, 160, 340));
 
         btn_verExamenes.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
         btn_verExamenes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/exam.png"))); // NOI18N
@@ -492,6 +502,10 @@ public class principal extends javax.swing.JFrame {
             }
         });
         Estudiantes.getContentPane().add(btn_singoutA, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 10, 180, -1));
+
+        jLabel45.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
+        jLabel45.setText("Seleccione la clase");
+        Estudiantes.getContentPane().add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, 110, 30));
 
         jLabel24.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
         jLabel24.setText("jLabel24");
@@ -805,7 +819,7 @@ public class principal extends javax.swing.JFrame {
 
         jSeparator2.setBackground(new java.awt.Color(0, 153, 255));
         jSeparator2.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 60, 90, 10));
+        getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 90, 10));
 
         btn_ingresar.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
         btn_ingresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sign-in.png"))); // NOI18N
@@ -853,7 +867,7 @@ public class principal extends javax.swing.JFrame {
                 jLabel8MouseClicked(evt);
             }
         });
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 40, 80, 30));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 80, 30));
 
         jLabel10.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
         jLabel10.setText("¿Eres estudiante nuevo?");
@@ -991,6 +1005,7 @@ public class principal extends javax.swing.JFrame {
                         break;
                     }
                 }
+                cb_examenAlumno.setModel(new DefaultComboBoxModel<>());
                 jLabel24.setText("Bienvenido " + alumnoos.get(flag).getNombreAlumno());
 //            tabla.setModel(new DefaultTableModel());
 //            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
@@ -998,6 +1013,7 @@ public class principal extends javax.swing.JFrame {
 //            model.addRow(row);
                 if (normal == true) {
                     for (int i = 0; i < clasess.size(); i++) {
+
                         cb_examenAlumno.addItem(clasess.get(i).getNombreClase());
                     }
                     Estudiantes.pack();
@@ -1112,14 +1128,16 @@ public class principal extends javax.swing.JFrame {
                         claseSeleccionada = Clase.find(eq("idClase", clasess.get(cb_examen.getSelectedIndex()).getIdClase())).first();
 //                        claseSeleccionada.idClase = clasess.get(cb_examen.getSelectedIndex()).getIdClase();
                         JOptionPane.showMessageDialog(null, claseSeleccionada);
-                        claseSeleccionada.addExamen(exs);
-                        System.out.println(claseSeleccionada);
+
+                        claseSeleccionada.addExamen(exs);// guarda el examen en la clase seleccionada.
+
+                        //System.out.println(claseSeleccionada);
                         claseSeleccionada = Clase.findOneAndReplace(eq("idClase", clasess.get(cb_examen.getSelectedIndex()).getIdClase()),
                                 claseSeleccionada, new FindOneAndReplaceOptions().returnDocument(ReturnDocument.AFTER));
-                        JOptionPane.showMessageDialog(null, claseSeleccionada);
+
+                        //JOptionPane.showMessageDialog(null, claseSeleccionada);
 //                        claseSeleccionada.getTests().add(exs);
                         //Clase.aggregate(clasess.get(cb_examen.getSelectedIndex()).getTests().add(exs));
-
                         // clasesita cl = new Examen(idExamen, idClasee, CantidadPreguntas);
                         //Clase.insertOne(cl);
                         //clasess.add(cl);
@@ -1162,11 +1180,14 @@ public class principal extends javax.swing.JFrame {
     }//GEN-LAST:event_userLoginActionPerformed
 
     private void btn_singoutAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_singoutAMouseClicked
-        for (int i = 0; i < clasess.size(); i++) {
-            // cb_examenAlumno.addItem(clasess.get(i).getNombreClase());
-            cb_examenAlumno.removeItem(clasess.get(i).getNombreClase());
-        }
 
+//        for (int i = 0; i < clasess.get(1).getTests().size(); i++) {
+//            //for (int j = 0; j < clasess.get(i).getTests().size() - 1; j++) {
+//                JOptionPane.showMessageDialog(null, clasess.get(1).getTests().size());
+//                System.out.println(clasess.get(1).getTests().get(i).getIdExamen());
+//            //}
+//
+//        }
         Estudiantes.dispose();
     }//GEN-LAST:event_btn_singoutAMouseClicked
 
@@ -1212,10 +1233,6 @@ public class principal extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btn_avanzarMouseClicked
-
-    private void cb_examenAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_examenAlumnoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cb_examenAlumnoActionPerformed
 
     private void btn_finalizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_finalizarMouseClicked
 //        if (!v.isSelected() && !f.isSelected()) {
@@ -1537,6 +1554,38 @@ public class principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_mostrardatosAdmiinActionPerformed
 
+    private void cb_examenAlumnoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_examenAlumnoItemStateChanged
+//        for (int i = 0; i < clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().size(); i++) {
+//            for (int j = 0; j < clasess.get(i).size(); j++) {
+//
+//                String numCadena = String.valueOf(clasess.get(i).getTests().get(j).getIdExamen());
+//                cb_escogerExamen.addItem(numCadena);
+//            }
+//        }
+////        for (int i = 0; i < clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().size(); i++) {
+////            JOptionPane.showMessageDialog(null, clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(i).getIdExamen());
+////        
+        j_examenes.setModel(new DefaultListModel<>());
+        //cb_examenAlumno.setModel(new DefaultComboBoxModel<>());
+
+        DefaultListModel<String> modelo = (DefaultListModel<String>) j_examenes.getModel();
+        String acum = "";
+
+        for (int i = 0; i < clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().size(); i++) {
+            //for (int j = 0; j < clasess.get(i).getTests().size() - 1; j++) {
+            // JOptionPane.showMessageDialog(null, clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().size());
+            //System.out.println(clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(i).getIdExamen());
+            //String numCadena = String.valueOf(clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(i).getIdExamen());
+            //cb_escogerExamen.addItem(numCadena);
+            acum = clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(i).getIdExamen() + "\n";
+            //}
+            modelo.addElement(acum + "\n");
+        }
+
+        j_examenes.setModel(modelo);
+
+    }//GEN-LAST:event_cb_examenAlumnoItemStateChanged
+
     public static String doHashing(String password) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("md5");
@@ -1674,6 +1723,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1688,6 +1738,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private com.toedter.calendar.JDateChooser jSeleccionFecha;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
@@ -1696,6 +1747,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JTextField j_cantP;
     private javax.swing.JTextField j_descripcion;
+    private javax.swing.JList<String> j_examenes;
     private javax.swing.JTextField j_idAlumno;
     private javax.swing.JTextField j_idClase;
     private javax.swing.JTextField j_idExamen;
