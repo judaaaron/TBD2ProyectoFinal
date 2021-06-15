@@ -1005,7 +1005,7 @@ public class principal extends javax.swing.JFrame {
                         break;
                     }
                 }
-                cb_examenAlumno.setModel(new DefaultComboBoxModel<>());
+                cb_examenAlumno.setModel(new DefaultComboBoxModel<>()); // setea los items del combo
                 jLabel24.setText("Bienvenido " + alumnoos.get(flag).getNombreAlumno());
 //            tabla.setModel(new DefaultTableModel());
 //            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
@@ -1302,6 +1302,8 @@ public class principal extends javax.swing.JFrame {
 //                break;
 //            }
 //        }
+        int itemList = j_examenes.getSelectedIndex();
+
         Date actual2 = null;
         String formato = "dd/MM/yyyy";
         Date actual = new Date();
@@ -1345,12 +1347,19 @@ public class principal extends javax.swing.JFrame {
             }
         }
         for (int i = 0; i < notes.size(); i++) {
-            if ((notes.get(i).getIdExamen() == idxx) && (notes.get(i).getIdAlumno() == idAl)) {
+            if ((notes.get(i).getIdExamen() == clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen()) && (notes.get(i).getIdAlumno() == idAl)) {
+                System.out.println(notes.get(i).getIdExamen()+"de notes");
+                System.out.println(idxx + "del itemList");
                 //JOptionPane.showMessageDialog(null, "Este alumno ya hizo algun examen");
                 validar = true;
                 break;
             }
         }
+//        for (int i = 0; i < clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().size(); i++) {
+//            if(clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(i).getIdExamen() == idxx){
+//                
+//            }
+//        }
 
         for (int i = 0; i < examenes.size(); i++) {
             if (examenes.get(i).getIdExamen() == idxx) {
@@ -1371,24 +1380,24 @@ public class principal extends javax.swing.JFrame {
         if (validar == true) {
             JOptionPane.showMessageDialog(null, "Este examen ya fue realizado");
         } else {
-            if (validar2 == true) {
-                JOptionPane.showMessageDialog(null, "Aun no es la fecha para elaborar este examen");
-            } else {
-                int cont = 0;
-                Estudiantes.setVisible(false);
-                jLabel27.setText("Examen de " + clasess.get(cb_examenAlumno.getSelectedIndex()).getNombreClase());
+            // if (validar2 == true) {
+            //    JOptionPane.showMessageDialog(null, "Aun no es la fecha para elaborar este examen");
+            // } else {
+            int cont = 0;
+            Estudiantes.setVisible(false);
+            jLabel27.setText("Examen de " + clasess.get(cb_examenAlumno.getSelectedIndex()).getNombreClase());
 
-                int puntos = 0;
-                for (int i = 0; i < clasess.size(); i++) {
-                    //  System.out.println(i + " indice " + clasess.get(i).getIdClase());
-                }
-                // System.out.println(examenes.get(idxx).idClase + "getselected");
-                for (int i = 0; i < examenes.size(); i++) {
-                    // System.out.println(examenes.get(i).getCantPreguntas() + "este es el cant preguntas");
-                }
-                for (int i = 0; i < examenes.size(); i++) {
-                    // System.out.println(i + "" + examenes.get(i).getIdClase());
-                }
+            int puntos = 0;
+            for (int i = 0; i < clasess.size(); i++) {
+                //  System.out.println(i + " indice " + clasess.get(i).getIdClase());
+            }
+            // System.out.println(examenes.get(idxx).idClase + "getselected");
+            for (int i = 0; i < examenes.size(); i++) {
+                // System.out.println(examenes.get(i).getCantPreguntas() + "este es el cant preguntas");
+            }
+            for (int i = 0; i < examenes.size(); i++) {
+                // System.out.println(i + "" + examenes.get(i).getIdClase());
+            }
 //        for (int i = 0; i < examenes.size(); i++) {
 //            if (examenes.get(i).getIdClase() == examenes.get(cb_examenAlumno.getSelectedIndex()).getIdClase()) {
 //                System.out.println(examenes.get(cb_examenAlumno.getSelectedIndex()).getCantPreguntas());
@@ -1396,28 +1405,28 @@ public class principal extends javax.swing.JFrame {
 //                break;
 //            }
 //        }
-                Bson filter = eq("idClase", clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase());
-                try {
-                    controlExamen = Exams.find(filter).first().getCantPreguntas();
-                    //  System.out.println(controlExamen + " este es control examen");
-                } catch (Exception e) {
-                }
+            Bson filter = eq("idClase", clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase());
+            try {
+                controlExamen = Exams.find(filter).first().getCantPreguntas();
+                //  System.out.println(controlExamen + " este es control examen");
+            } catch (Exception e) {
+            }
 
-                for (int i = 0; i < questions.size(); i++) {
-                    if (questions.get(i).getIdClase() == clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase()) {
-                        //  System.out.println(questions.get(i).getDescripcion());
-                        preguntasExamen.add(questions.get(i).getDescripcion());
-                        respuestasExamen.add(questions.get(i).isTipo());
-
-                    }
+            for (int i = 0; i < questions.size(); i++) {
+                if (questions.get(i).getIdClase() == clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase()) {
+                    //  System.out.println(questions.get(i).getDescripcion());
+                    preguntasExamen.add(questions.get(i).getDescripcion());
+                    respuestasExamen.add(questions.get(i).isTipo());
 
                 }
-                // System.out.println(controlExamen + "este es el control examen");
 
-                ventana_examen.setText(preguntasExamen.get(cp));
-                //System.out.println(respuestasExamen.get(cp) + "que es");
-                acumP += "Pregunta: " + (cp + 1) + " de " + controlExamen;
-                info.setText(acumP);
+            }
+            // System.out.println(controlExamen + "este es el control examen");
+
+            ventana_examen.setText(preguntasExamen.get(cp));
+            //System.out.println(respuestasExamen.get(cp) + "que es");
+            acumP += "Pregunta: " + (cp + 1) + " de " + controlExamen;
+            info.setText(acumP);
 
 //        if (!v.isSelected() && !f.isSelected()) {
 //            puntaje += 0;
@@ -1437,29 +1446,28 @@ public class principal extends javax.swing.JFrame {
 //                }
 //            }
 //        }
-                //System.out.println(buttonGroup2.getSelection()+"que es");
-                aux = cp;
-                // System.out.println(respuestasExamen.get(0) + " este es antes " + cp);
+            //System.out.println(buttonGroup2.getSelection()+"que es");
+            aux = cp;
+            // System.out.println(respuestasExamen.get(0) + " este es antes " + cp);
 
-                for (int j = 0; j < preguntasExamen.size(); j++) {
-                    // System.out.println(preguntasExamen.get(j));
+            for (int j = 0; j < preguntasExamen.size(); j++) {
+                // System.out.println(preguntasExamen.get(j));
+            }
+            for (int i = 0; i < questions.size(); i++) {
+                if (questions.get(i).getIdClase() == clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase()) {
+                    // System.out.println(i + "indice" + questions.get(i).isTipo() + " este del arraylist");
                 }
-                for (int i = 0; i < questions.size(); i++) {
-                    if (questions.get(i).getIdClase() == clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase()) {
-                        // System.out.println(i + "indice" + questions.get(i).isTipo() + " este del arraylist");
-                    }
-                }
-
-                for (int i = 0; i < respuestasExamen.size(); i++) {
-                    // System.out.println(i + " indice " + respuestasExamen.get(i) + " este de respuestas");
-                }
-                Exameness.pack();
-                Exameness.setModal(true);
-                Exameness.setLocationRelativeTo(null);
-                Exameness.setVisible(true);
-
             }
 
+            for (int i = 0; i < respuestasExamen.size(); i++) {
+                // System.out.println(i + " indice " + respuestasExamen.get(i) + " este de respuestas");
+            }
+            Exameness.pack();
+            Exameness.setModal(true);
+            Exameness.setLocationRelativeTo(null);
+            Exameness.setVisible(true);
+
+            //}
         }
 
     }//GEN-LAST:event_btn_comenzarMouseClicked
