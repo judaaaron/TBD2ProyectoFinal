@@ -86,7 +86,7 @@ public class principal extends javax.swing.JFrame {
     Nota nt = new Nota();
 
     int flag = 0;
-    int CantidadPreguntas = 0, controlExamen = 0, cp = 0, puntaje = 0, aux, cero = 0, puntosPosibles, idxx = 0;
+    int CantidadPreguntas = 0, controlExamen = 0, cp = 0, puntaje = 0, aux, cero = 0, puntosPosibles, idxx = 0, itemList;
     Object verdadero = true, falso = false;
     String acumP = "";
 
@@ -451,8 +451,8 @@ public class principal extends javax.swing.JFrame {
         Estudiantes.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel23.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
-        jLabel23.setText("Seleccione el examen");
-        Estudiantes.getContentPane().add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 60, 110, 30));
+        jLabel23.setText("Seleccione el examen por el ID");
+        Estudiantes.getContentPane().add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 160, 30));
 
         cb_examenAlumno.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
         cb_examenAlumno.addItemListener(new java.awt.event.ItemListener() {
@@ -1104,45 +1104,49 @@ public class principal extends javax.swing.JFrame {
 //        long cursi = db.getCollection("Preguntas").countDocuments();
 //        +
 //       db.getCollection("Preguntas").find(eq("idClase", clasess.get(idClasee).getIdClase())).forEach(doc -> System.out.println(doc.toJson()));
-                for (Document cur : db.getCollection("Preguntas").find(eq("idClase", clasess.get(idClasee).getIdClase()))) {
-                    CantidadPreguntas++;
-                }   //long count = db.getCollection("Preguntas").countDocuments();
+                Date FechaValidacion = new Date();
+                if ((date.getDay() < FechaValidacion.getDay()) || (date.getMonth() < FechaValidacion.getMonth()) || (date.getYear() < FechaValidacion.getYear())) {
+                    JOptionPane.showMessageDialog(null, "No puedes poner fechas antiguas");
+                } else {
+                    for (Document cur : db.getCollection("Preguntas").find(eq("idClase", clasess.get(idClasee).getIdClase()))) {
+                        CantidadPreguntas++;
+                    }   //long count = db.getCollection("Preguntas").countDocuments();
 // System.out.println(CantidadPreguntas);
-                if (cantPreg <= CantidadPreguntas && cantPreg >= 1) {
-                    for (int i = 0; i < examenes.size(); i++) {
-                        if (idExamen == examenes.get(i).getIdExamen()) {
-                            ValidarID = true;
-                            break;
+                    if (cantPreg <= CantidadPreguntas && cantPreg >= 1) {
+                        for (int i = 0; i < examenes.size(); i++) {
+                            if (idExamen == examenes.get(i).getIdExamen()) {
+                                ValidarID = true;
+                                break;
+                            }
                         }
-                    }
 
-                    if (ValidarID == false) {
+                        if (ValidarID == false) {
 
-                        Examen exs = new Examen(idExamen, clasess.get(idClasee).getIdClase(), cantPreg, fechaExa);
+                            Examen exs = new Examen(idExamen, clasess.get(idClasee).getIdClase(), cantPreg, fechaExa);
 
-                        clasess.get(cb_examen.getSelectedIndex()).getTests().add(exs);
-                        for (int i = 0; i < clasess.get(cb_examen.getSelectedIndex()).getTests().size(); i++) {
-                            System.out.println("examenes pertenecientes a esta clase jeje" + clasess.get(cb_examen.getSelectedIndex()).getTests().get(i).getIdExamen());
-                        }
-                        Exams.insertOne(exs);
-                        claseSeleccionada = Clase.find(eq("idClase", clasess.get(cb_examen.getSelectedIndex()).getIdClase())).first();
+                            clasess.get(cb_examen.getSelectedIndex()).getTests().add(exs);
+                            for (int i = 0; i < clasess.get(cb_examen.getSelectedIndex()).getTests().size(); i++) {
+                                System.out.println("examenes pertenecientes a esta clase jeje" + clasess.get(cb_examen.getSelectedIndex()).getTests().get(i).getIdExamen());
+                            }
+                            Exams.insertOne(exs);
+                            claseSeleccionada = Clase.find(eq("idClase", clasess.get(cb_examen.getSelectedIndex()).getIdClase())).first();
 //                        claseSeleccionada.idClase = clasess.get(cb_examen.getSelectedIndex()).getIdClase();
-                        JOptionPane.showMessageDialog(null, claseSeleccionada);
+                            JOptionPane.showMessageDialog(null, claseSeleccionada);
 
-                        claseSeleccionada.addExamen(exs);// guarda el examen en la clase seleccionada.
+                            claseSeleccionada.addExamen(exs);// guarda el examen en la clase seleccionada.
 
-                        //System.out.println(claseSeleccionada);
-                        claseSeleccionada = Clase.findOneAndReplace(eq("idClase", clasess.get(cb_examen.getSelectedIndex()).getIdClase()),
-                                claseSeleccionada, new FindOneAndReplaceOptions().returnDocument(ReturnDocument.AFTER));
+                            //System.out.println(claseSeleccionada);
+                            claseSeleccionada = Clase.findOneAndReplace(eq("idClase", clasess.get(cb_examen.getSelectedIndex()).getIdClase()),
+                                    claseSeleccionada, new FindOneAndReplaceOptions().returnDocument(ReturnDocument.AFTER));
 
-                        //JOptionPane.showMessageDialog(null, claseSeleccionada);
+                            //JOptionPane.showMessageDialog(null, claseSeleccionada);
 //                        claseSeleccionada.getTests().add(exs);
-                        //Clase.aggregate(clasess.get(cb_examen.getSelectedIndex()).getTests().add(exs));
-                        // clasesita cl = new Examen(idExamen, idClasee, CantidadPreguntas);
-                        //Clase.insertOne(cl);
-                        //clasess.add(cl);
-                        //ex = Exams.findOneAndReplace(eq("idclase",clasess.get(cb_examen.getSelectedIndex()).getIdClase()), ex, new FindOneAndReplaceOptions().returnDocument(ReturnDocument.AFTER));
-                        //JOptionPane.showMessageDialog(null,ex);
+                            //Clase.aggregate(clasess.get(cb_examen.getSelectedIndex()).getTests().add(exs));
+                            // clasesita cl = new Examen(idExamen, idClasee, CantidadPreguntas);
+                            //Clase.insertOne(cl);
+                            //clasess.add(cl);
+                            //ex = Exams.findOneAndReplace(eq("idclase",clasess.get(cb_examen.getSelectedIndex()).getIdClase()), ex, new FindOneAndReplaceOptions().returnDocument(ReturnDocument.AFTER));
+                            //JOptionPane.showMessageDialog(null,ex);
 //                        Document updateArray = new Document();
 //                        updateArray.append("$set", new BasicDBObject("tests", exs));
 //                        // updateArray.put("tests", exs);
@@ -1152,21 +1156,23 @@ public class principal extends javax.swing.JFrame {
 //                        //Actualiza la clase y el array de examen
 //                        //db.getCollection("Clase").updateMany(buscaPorId, updateArray);
 //                        db.getCollection("Clase").insertOne(updateArray);
-                        //Clase.insertOne(cla);
-                        JOptionPane.showMessageDialog(null, "Examen creado con éxito");
-                        j_idExamen.setText("");
-                        j_cantP.setText("");
+                            //Clase.insertOne(cla);
+                            JOptionPane.showMessageDialog(null, "Examen creado con éxito");
+                            j_idExamen.setText("");
+                            j_cantP.setText("");
+
+                        } else {
+                            JOptionPane.showMessageDialog(null, "idExamen ya existe");
+                            j_idExamen.setText("");
+                            j_cantP.setText("");
+                        }
 
                     } else {
-                        JOptionPane.showMessageDialog(null, "idExamen ya existe");
-                        j_idExamen.setText("");
+                        JOptionPane.showMessageDialog(null, "Cantidad de preguntas es mayor a cantidad de preguntas de la clase.");
                         j_cantP.setText("");
                     }
-
-                } else {
-                    JOptionPane.showMessageDialog(null, "Cantidad de preguntas es mayor a cantidad de preguntas de la clase.");
-                    j_cantP.setText("");
                 }
+
             } catch (ParseException ex) {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1280,7 +1286,7 @@ public class principal extends javax.swing.JFrame {
         }
         puntosPosibles = controlExamen * 5;
 
-        Nota ntt = new Nota(alumnoos.get(flag).getIdAlumno(), idxx, puntaje, puntosPosibles);
+        Nota ntt = new Nota(alumnoos.get(flag).getIdAlumno(), clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen(), puntaje, puntosPosibles);
         notas.insertOne(ntt);
         notes.add(ntt);
         cp = 0;
@@ -1302,8 +1308,12 @@ public class principal extends javax.swing.JFrame {
 //                break;
 //            }
 //        }
-        int itemList = j_examenes.getSelectedIndex();
-
+        itemList = j_examenes.getSelectedIndex();
+        JOptionPane.showMessageDialog(null, itemList);
+        JOptionPane.showMessageDialog(null, clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen());
+        for (int i = 0; i < notes.size(); i++) {
+            System.out.println(notes.get(i).getIdExamen() + "es es del arrayList");
+        }
         Date actual2 = null;
         String formato = "dd/MM/yyyy";
         Date actual = new Date();
@@ -1348,7 +1358,7 @@ public class principal extends javax.swing.JFrame {
         }
         for (int i = 0; i < notes.size(); i++) {
             if ((notes.get(i).getIdExamen() == clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen()) && (notes.get(i).getIdAlumno() == idAl)) {
-                System.out.println(notes.get(i).getIdExamen()+"de notes");
+                System.out.println(notes.get(i).getIdExamen() + "de notes");
                 System.out.println(idxx + "del itemList");
                 //JOptionPane.showMessageDialog(null, "Este alumno ya hizo algun examen");
                 validar = true;
@@ -1362,7 +1372,7 @@ public class principal extends javax.swing.JFrame {
 //        }
 
         for (int i = 0; i < examenes.size(); i++) {
-            if (examenes.get(i).getIdExamen() == idxx) {
+            if (examenes.get(i).getIdExamen() == clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen()) {
                 if (!(examenes.get(i).getFecha().equals(actual2))) {
                     JOptionPane.showMessageDialog(null, examenes.get(i).getFecha() + "este del examen " + actual2 + " esta es la actual");
                     validar2 = true;
@@ -1380,24 +1390,24 @@ public class principal extends javax.swing.JFrame {
         if (validar == true) {
             JOptionPane.showMessageDialog(null, "Este examen ya fue realizado");
         } else {
-            // if (validar2 == true) {
-            //    JOptionPane.showMessageDialog(null, "Aun no es la fecha para elaborar este examen");
-            // } else {
-            int cont = 0;
-            Estudiantes.setVisible(false);
-            jLabel27.setText("Examen de " + clasess.get(cb_examenAlumno.getSelectedIndex()).getNombreClase());
+            if (validar2 == true) {
+                JOptionPane.showMessageDialog(null, "Aun no es la fecha para elaborar este examen");
+            } else {
+                int cont = 0;
+                Estudiantes.setVisible(false);
+                jLabel27.setText("Examen de " + clasess.get(cb_examenAlumno.getSelectedIndex()).getNombreClase());
 
-            int puntos = 0;
-            for (int i = 0; i < clasess.size(); i++) {
-                //  System.out.println(i + " indice " + clasess.get(i).getIdClase());
-            }
-            // System.out.println(examenes.get(idxx).idClase + "getselected");
-            for (int i = 0; i < examenes.size(); i++) {
-                // System.out.println(examenes.get(i).getCantPreguntas() + "este es el cant preguntas");
-            }
-            for (int i = 0; i < examenes.size(); i++) {
-                // System.out.println(i + "" + examenes.get(i).getIdClase());
-            }
+                int puntos = 0;
+                for (int i = 0; i < clasess.size(); i++) {
+                    //  System.out.println(i + " indice " + clasess.get(i).getIdClase());
+                }
+                // System.out.println(examenes.get(idxx).idClase + "getselected");
+                for (int i = 0; i < examenes.size(); i++) {
+                    // System.out.println(examenes.get(i).getCantPreguntas() + "este es el cant preguntas");
+                }
+                for (int i = 0; i < examenes.size(); i++) {
+                    // System.out.println(i + "" + examenes.get(i).getIdClase());
+                }
 //        for (int i = 0; i < examenes.size(); i++) {
 //            if (examenes.get(i).getIdClase() == examenes.get(cb_examenAlumno.getSelectedIndex()).getIdClase()) {
 //                System.out.println(examenes.get(cb_examenAlumno.getSelectedIndex()).getCantPreguntas());
@@ -1405,28 +1415,28 @@ public class principal extends javax.swing.JFrame {
 //                break;
 //            }
 //        }
-            Bson filter = eq("idClase", clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase());
-            try {
-                controlExamen = Exams.find(filter).first().getCantPreguntas();
-                //  System.out.println(controlExamen + " este es control examen");
-            } catch (Exception e) {
-            }
-
-            for (int i = 0; i < questions.size(); i++) {
-                if (questions.get(i).getIdClase() == clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase()) {
-                    //  System.out.println(questions.get(i).getDescripcion());
-                    preguntasExamen.add(questions.get(i).getDescripcion());
-                    respuestasExamen.add(questions.get(i).isTipo());
-
+                Bson filter = eq("idClase", clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase());
+                try {
+                    controlExamen = Exams.find(filter).first().getCantPreguntas();
+                    //  System.out.println(controlExamen + " este es control examen");
+                } catch (Exception e) {
                 }
 
-            }
-            // System.out.println(controlExamen + "este es el control examen");
+                for (int i = 0; i < questions.size(); i++) {
+                    if (questions.get(i).getIdClase() == clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase()) {
+                        //  System.out.println(questions.get(i).getDescripcion());
+                        preguntasExamen.add(questions.get(i).getDescripcion());
+                        respuestasExamen.add(questions.get(i).isTipo());
 
-            ventana_examen.setText(preguntasExamen.get(cp));
-            //System.out.println(respuestasExamen.get(cp) + "que es");
-            acumP += "Pregunta: " + (cp + 1) + " de " + controlExamen;
-            info.setText(acumP);
+                    }
+
+                }
+                // System.out.println(controlExamen + "este es el control examen");
+
+                ventana_examen.setText(preguntasExamen.get(cp));
+                //System.out.println(respuestasExamen.get(cp) + "que es");
+                acumP += "Pregunta: " + (cp + 1) + " de " + controlExamen;
+                info.setText(acumP);
 
 //        if (!v.isSelected() && !f.isSelected()) {
 //            puntaje += 0;
@@ -1446,28 +1456,28 @@ public class principal extends javax.swing.JFrame {
 //                }
 //            }
 //        }
-            //System.out.println(buttonGroup2.getSelection()+"que es");
-            aux = cp;
-            // System.out.println(respuestasExamen.get(0) + " este es antes " + cp);
+                //System.out.println(buttonGroup2.getSelection()+"que es");
+                aux = cp;
+                // System.out.println(respuestasExamen.get(0) + " este es antes " + cp);
 
-            for (int j = 0; j < preguntasExamen.size(); j++) {
-                // System.out.println(preguntasExamen.get(j));
-            }
-            for (int i = 0; i < questions.size(); i++) {
-                if (questions.get(i).getIdClase() == clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase()) {
-                    // System.out.println(i + "indice" + questions.get(i).isTipo() + " este del arraylist");
+                for (int j = 0; j < preguntasExamen.size(); j++) {
+                    // System.out.println(preguntasExamen.get(j));
                 }
-            }
+                for (int i = 0; i < questions.size(); i++) {
+                    if (questions.get(i).getIdClase() == clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase()) {
+                        // System.out.println(i + "indice" + questions.get(i).isTipo() + " este del arraylist");
+                    }
+                }
 
-            for (int i = 0; i < respuestasExamen.size(); i++) {
-                // System.out.println(i + " indice " + respuestasExamen.get(i) + " este de respuestas");
-            }
-            Exameness.pack();
-            Exameness.setModal(true);
-            Exameness.setLocationRelativeTo(null);
-            Exameness.setVisible(true);
+                for (int i = 0; i < respuestasExamen.size(); i++) {
+                    // System.out.println(i + " indice " + respuestasExamen.get(i) + " este de respuestas");
+                }
+                Exameness.pack();
+                Exameness.setModal(true);
+                Exameness.setLocationRelativeTo(null);
+                Exameness.setVisible(true);
 
-            //}
+            }
         }
 
     }//GEN-LAST:event_btn_comenzarMouseClicked
