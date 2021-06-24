@@ -1409,7 +1409,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="290" y="30" width="150" height="20"/>
+              <AbsoluteConstraints x="800" y="30" width="180" height="20"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -1439,11 +1439,11 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Agency FB" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Ex&#xe1;men asociado a la clase"/>
+            <Property name="text" type="java.lang.String" value="Ex&#xe1;menes asociados a la clase seleccionada"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="300" y="430" width="150" height="20"/>
+              <AbsoluteConstraints x="240" y="30" width="250" height="20"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -1466,7 +1466,7 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="190" y="50" width="420" height="360"/>
+              <AbsoluteConstraints x="660" y="60" width="420" height="380"/>
             </Constraint>
           </Constraints>
 
@@ -1494,7 +1494,7 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="190" y="450" width="420" height="50"/>
+              <AbsoluteConstraints x="170" y="60" width="420" height="380"/>
             </Constraint>
           </Constraints>
 
@@ -1513,6 +1513,18 @@
           </SubComponents>
         </Container>
         <Component class="javax.swing.JLabel" name="fondo_ver">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/fondo12.jpg"/>
+            </Property>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="510" y="0" width="620" height="510"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JLabel" name="fondo_ver1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/fondo12.jpg"/>

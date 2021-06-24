@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
@@ -11,6 +13,7 @@ public class Nota {
     @BsonProperty(value = "_id")
     ObjectId id;
     int idAlumno, idExamen, nota, puntosPosibles;
+    List<Preguntas> respuestass = new ArrayList<>();
 
     public Nota() {
     }
@@ -60,6 +63,18 @@ public class Nota {
 
     public void setNota(int nota) {
         this.nota = nota;
+    }
+
+    public List<Preguntas> getRespuestas() {
+        return respuestass;
+    }
+
+    public void setRespuestas(List<Preguntas> respuestass) {
+        this.respuestass = respuestass;
+    }
+
+    public void addRespuesta(Preguntas questions) {
+        respuestass.add(questions);
     }
 
     @Override

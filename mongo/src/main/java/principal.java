@@ -58,6 +58,8 @@ public class principal extends javax.swing.JFrame {
     Query k;
 
     clasesita claseSeleccionada = null;
+    Nota notaSeleccionada = null;
+    Nota instanciaNota = null;
 
     ArrayList<String> coleccion = new ArrayList();
     ArrayList<Alumno> alumnoos = new ArrayList();
@@ -254,6 +256,7 @@ public class principal extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         area8 = new javax.swing.JTextArea();
         fondo_ver = new javax.swing.JLabel();
+        fondo_ver1 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         passLogin = new javax.swing.JPasswordField();
@@ -752,7 +755,7 @@ public class principal extends javax.swing.JFrame {
 
         jLabel41.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
         jLabel41.setText("Preguntas asociadas a la clase");
-        datosAdmin.getContentPane().add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, 150, 20));
+        datosAdmin.getContentPane().add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 30, 180, 20));
 
         cb_mostrarClases.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
         cb_mostrarClases.addItemListener(new java.awt.event.ItemListener() {
@@ -763,8 +766,8 @@ public class principal extends javax.swing.JFrame {
         datosAdmin.getContentPane().add(cb_mostrarClases, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 150, 30));
 
         jLabel42.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
-        jLabel42.setText("Exámen asociado a la clase");
-        datosAdmin.getContentPane().add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 430, 150, 20));
+        jLabel42.setText("Exámenes asociados a la clase seleccionada");
+        datosAdmin.getContentPane().add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, 250, 20));
 
         jLabel43.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
         jLabel43.setText("Seleccione una clase");
@@ -776,7 +779,7 @@ public class principal extends javax.swing.JFrame {
         area7.setRows(5);
         jScrollPane7.setViewportView(area7);
 
-        datosAdmin.getContentPane().add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 420, 360));
+        datosAdmin.getContentPane().add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 60, 420, 380));
 
         jScrollPane6.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane6.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -787,10 +790,13 @@ public class principal extends javax.swing.JFrame {
         area8.setRows(5);
         jScrollPane6.setViewportView(area8);
 
-        datosAdmin.getContentPane().add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 450, 420, 50));
+        datosAdmin.getContentPane().add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 420, 380));
 
         fondo_ver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fondo12.jpg"))); // NOI18N
-        datosAdmin.getContentPane().add(fondo_ver, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 620, 510));
+        datosAdmin.getContentPane().add(fondo_ver, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 0, 620, 510));
+
+        fondo_ver1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fondo12.jpg"))); // NOI18N
+        datosAdmin.getContentPane().add(fondo_ver1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 620, 510));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -1290,7 +1296,20 @@ public class principal extends javax.swing.JFrame {
         notas.insertOne(ntt);
         notes.add(ntt);
         cp = 0;
+        int idPreguntaa;
+        boolean logica = false;
+        JOptionPane.showMessageDialog(null, controlExamen + "control examen");
 
+        int cc = 0;
+
+////        notaSeleccionada = notas.find(eq("idAlumno", alumnoos.get(flag).getIdAlumno())).first();
+//////                        claseSeleccionada.idClase = clasess.get(cb_examen.getSelectedIndex()).getIdClase();
+////        JOptionPane.showMessageDialog(null, notaSeleccionada);
+////
+////        //  notaSeleccionada.addRespuesta(exs);// guarda el examen en la clase seleccionada.
+////        //System.out.println(claseSeleccionada);
+////        claseSeleccionada = Clase.findOneAndReplace(eq("idClase", clasess.get(cb_examen.getSelectedIndex()).getIdClase()),
+////                claseSeleccionada, new FindOneAndReplaceOptions().returnDocument(ReturnDocument.AFTER));
         JOptionPane.showMessageDialog(null, "Tu puntaje obtenido es: " + puntaje);
         Exameness.dispose();
         Estudiantes.pack();
@@ -1309,8 +1328,8 @@ public class principal extends javax.swing.JFrame {
 //            }
 //        }
         itemList = j_examenes.getSelectedIndex();
-        JOptionPane.showMessageDialog(null, itemList);
-        JOptionPane.showMessageDialog(null, clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen());
+       // JOptionPane.showMessageDialog(null, itemList);
+       // JOptionPane.showMessageDialog(null, clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen());
         for (int i = 0; i < notes.size(); i++) {
             System.out.println(notes.get(i).getIdExamen() + "es es del arrayList");
         }
@@ -1374,7 +1393,7 @@ public class principal extends javax.swing.JFrame {
         for (int i = 0; i < examenes.size(); i++) {
             if (examenes.get(i).getIdExamen() == clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen()) {
                 if (!(examenes.get(i).getFecha().equals(actual2))) {
-                    JOptionPane.showMessageDialog(null, examenes.get(i).getFecha() + "este del examen " + actual2 + " esta es la actual");
+                   // JOptionPane.showMessageDialog(null, examenes.get(i).getFecha() + "este del examen " + actual2 + " esta es la actual");
                     validar2 = true;
                 }
             }
@@ -1554,9 +1573,9 @@ public class principal extends javax.swing.JFrame {
         //model.addElement(aPreg+"\n");
         area7.setText(aPreg);
         //  Jlist_Preguntas.setModel(model);
-        for (int i = 0; i < examenes.size(); i++) {
-            if (clasess.get(cb_mostrarClases.getSelectedIndex()).getIdClase() == examenes.get(i).getIdClase()) {
-                aExa += "•" + " Id Examen: " + " " + examenes.get(i).getIdExamen() + " /N° Preguntas: " + examenes.get(i).getCantPreguntas() + "\n";
+        for (int i = 0; i < clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().size(); i++) {
+            if (clasess.get(cb_mostrarClases.getSelectedIndex()).getIdClase() == clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getIdClase()) {
+                aExa += "•" + " Id Examen: " + " " + clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getIdExamen()+ " /N° Preguntas: " + clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getCantPreguntas() + "\n";
                 aExa += "\n";
             }
         }
@@ -1700,6 +1719,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JLabel fondo;
     private javax.swing.JLabel fondo_Admin;
     private javax.swing.JLabel fondo_ver;
+    private javax.swing.JLabel fondo_ver1;
     private javax.swing.JLabel info;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

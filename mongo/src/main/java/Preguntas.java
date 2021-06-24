@@ -25,6 +25,13 @@ public class Preguntas {
         this.idClase = idClase;
     }
 
+    public Preguntas(int IDPregunta, boolean tipo) {
+        this.IDPregunta = IDPregunta;
+        this.tipo = tipo;
+    }
+    
+    
+
     public Preguntas(int IDPregunta, String Titulo, String descripcion, int idClase, boolean tipo) {
         this.IDPregunta = IDPregunta;
         this.Titulo = Titulo;
