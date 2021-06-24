@@ -754,8 +754,8 @@ public class principal extends javax.swing.JFrame {
         datosAdmin.getContentPane().add(btnregresar_mostrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, 130, 40));
 
         jLabel41.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
-        jLabel41.setText("Preguntas asociadas a la clase");
-        datosAdmin.getContentPane().add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 30, 180, 20));
+        jLabel41.setText("Preguntas asociadas a la clase seleccionada");
+        datosAdmin.getContentPane().add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 40, 240, 20));
 
         cb_mostrarClases.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
         cb_mostrarClases.addItemListener(new java.awt.event.ItemListener() {
@@ -767,7 +767,7 @@ public class principal extends javax.swing.JFrame {
 
         jLabel42.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
         jLabel42.setText("Exámenes asociados a la clase seleccionada");
-        datosAdmin.getContentPane().add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, 250, 20));
+        datosAdmin.getContentPane().add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 250, 20));
 
         jLabel43.setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
         jLabel43.setText("Seleccione una clase");
@@ -1132,12 +1132,12 @@ public class principal extends javax.swing.JFrame {
 
                             clasess.get(cb_examen.getSelectedIndex()).getTests().add(exs);
                             for (int i = 0; i < clasess.get(cb_examen.getSelectedIndex()).getTests().size(); i++) {
-                                System.out.println("examenes pertenecientes a esta clase jeje" + clasess.get(cb_examen.getSelectedIndex()).getTests().get(i).getIdExamen());
+                                // System.out.println("examenes pertenecientes a esta clase jeje" + clasess.get(cb_examen.getSelectedIndex()).getTests().get(i).getIdExamen());
                             }
                             Exams.insertOne(exs);
                             claseSeleccionada = Clase.find(eq("idClase", clasess.get(cb_examen.getSelectedIndex()).getIdClase())).first();
 //                        claseSeleccionada.idClase = clasess.get(cb_examen.getSelectedIndex()).getIdClase();
-                            JOptionPane.showMessageDialog(null, claseSeleccionada);
+                            //JOptionPane.showMessageDialog(null, claseSeleccionada);
 
                             claseSeleccionada.addExamen(exs);// guarda el examen en la clase seleccionada.
 
@@ -1298,7 +1298,6 @@ public class principal extends javax.swing.JFrame {
         cp = 0;
         int idPreguntaa;
         boolean logica = false;
-        JOptionPane.showMessageDialog(null, controlExamen + "control examen");
 
         int cc = 0;
 
@@ -1311,11 +1310,14 @@ public class principal extends javax.swing.JFrame {
 ////        claseSeleccionada = Clase.findOneAndReplace(eq("idClase", clasess.get(cb_examen.getSelectedIndex()).getIdClase()),
 ////                claseSeleccionada, new FindOneAndReplaceOptions().returnDocument(ReturnDocument.AFTER));
         JOptionPane.showMessageDialog(null, "Tu puntaje obtenido es: " + puntaje);
+        controlExamen=0;
+        info.setText("");
         Exameness.dispose();
         Estudiantes.pack();
         Estudiantes.setModal(true);
         Estudiantes.setLocationRelativeTo(null);
         Estudiantes.setVisible(true);
+        
 
 
     }//GEN-LAST:event_btn_finalizarMouseClicked
@@ -1328,8 +1330,8 @@ public class principal extends javax.swing.JFrame {
 //            }
 //        }
         itemList = j_examenes.getSelectedIndex();
-       // JOptionPane.showMessageDialog(null, itemList);
-       // JOptionPane.showMessageDialog(null, clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen());
+        // JOptionPane.showMessageDialog(null, itemList);
+        // JOptionPane.showMessageDialog(null, clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen());
         for (int i = 0; i < notes.size(); i++) {
             System.out.println(notes.get(i).getIdExamen() + "es es del arrayList");
         }
@@ -1345,7 +1347,10 @@ public class principal extends javax.swing.JFrame {
         }
 
         cp = 0;
+        controlExamen=0;
         puntaje = 0;
+        acumP="";
+        info.setText("");
         ventana_examen.setText("");
         buttonGroup2.clearSelection();
         btn_avanzar.setEnabled(true);
@@ -1365,9 +1370,9 @@ public class principal extends javax.swing.JFrame {
         int idExa, idAl = alumnoos.get(flag).getIdAlumno();
 
         for (int i = 0; i < clasess.size(); i++) {
-            System.out.println(clasess.get(i).getIdClase() + " este es del for");
+          // System.out.println(clasess.get(i).getIdClase() + " este es del for");
         }
-        System.out.println(clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase() + "este es del combos");
+     //   System.out.println(clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase() + "este es del combos");
 //        System.out.println(idxx + " idxx");
 //        System.out.println(alumnoos.get(flag).getIdAlumno() + "control id alumno");
         for (int i = 0; i < examenes.size(); i++) {
@@ -1377,8 +1382,8 @@ public class principal extends javax.swing.JFrame {
         }
         for (int i = 0; i < notes.size(); i++) {
             if ((notes.get(i).getIdExamen() == clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen()) && (notes.get(i).getIdAlumno() == idAl)) {
-                System.out.println(notes.get(i).getIdExamen() + "de notes");
-                System.out.println(idxx + "del itemList");
+                //System.out.println(notes.get(i).getIdExamen() + "de notes");
+               // System.out.println(idxx + "del itemList");
                 //JOptionPane.showMessageDialog(null, "Este alumno ya hizo algun examen");
                 validar = true;
                 break;
@@ -1393,7 +1398,7 @@ public class principal extends javax.swing.JFrame {
         for (int i = 0; i < examenes.size(); i++) {
             if (examenes.get(i).getIdExamen() == clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen()) {
                 if (!(examenes.get(i).getFecha().equals(actual2))) {
-                   // JOptionPane.showMessageDialog(null, examenes.get(i).getFecha() + "este del examen " + actual2 + " esta es la actual");
+                    // JOptionPane.showMessageDialog(null, examenes.get(i).getFecha() + "este del examen " + actual2 + " esta es la actual");
                     validar2 = true;
                 }
             }
@@ -1433,14 +1438,25 @@ public class principal extends javax.swing.JFrame {
 //              controlExamen = examenes.get(cb_examenAlumno.getSelectedIndex()).getCantPreguntas();
 //                break;
 //            }
-//        }
-                Bson filter = eq("idClase", clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase());
-                try {
-                    controlExamen = Exams.find(filter).first().getCantPreguntas();
-                    //  System.out.println(controlExamen + " este es control examen");
-                } catch (Exception e) {
+//     }
+//              //  for (int i = 0; i < clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().size(); i++) {
+//
+//                    Bson filter = eq("idExamen", clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen());
+//                    try {
+//                        controlExamen = Clase.find(filter).first().getTests().get(itemList).getCantPreguntas();
+//                        //  System.out.println(controlExamen + " este es control examen");
+//                    } catch (Exception e) {
+//                    }
+//               // }
+                
+                for (int i = 0; i < examenes.size(); i++) {
+                   // JOptionPane.showMessageDialog(null, examenes.get(cb_examenAlumno.getSelectedIndex()).getIdExamen() + "del mas arriba");
+                    if (examenes.get(i).getIdExamen() == clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen() ) {
+                       // JOptionPane.showMessageDialog(null, examenes.get(cb_examenAlumno.getSelectedIndex()).getIdExamen() + "del combo");
+                        //JOptionPane.showMessageDialog(null, clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(i).getIdExamen() + "combo pero en ");
+                        controlExamen = examenes.get(i).getCantPreguntas();
+                    }
                 }
-
                 for (int i = 0; i < questions.size(); i++) {
                     if (questions.get(i).getIdClase() == clasess.get(cb_examenAlumno.getSelectedIndex()).getIdClase()) {
                         //  System.out.println(questions.get(i).getDescripcion());
@@ -1575,7 +1591,7 @@ public class principal extends javax.swing.JFrame {
         //  Jlist_Preguntas.setModel(model);
         for (int i = 0; i < clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().size(); i++) {
             if (clasess.get(cb_mostrarClases.getSelectedIndex()).getIdClase() == clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getIdClase()) {
-                aExa += "•" + " Id Examen: " + " " + clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getIdExamen()+ " /N° Preguntas: " + clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getCantPreguntas() + "\n";
+                aExa += "•" + " Id Examen: " + " " + clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getIdExamen() + " /N° Preguntas: " + clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getCantPreguntas() + "\n";
                 aExa += "\n";
             }
         }
