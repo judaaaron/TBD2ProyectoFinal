@@ -1074,6 +1074,7 @@ public class principal extends javax.swing.JFrame {
                 clasess.add(cl);
 
                 JOptionPane.showMessageDialog(null, "Clase creada con exito");
+                cb_mostrarClases.setModel(new DefaultComboBoxModel<>()); // setea los items del combo
                 for (int i = 0; i < clasess.size(); i++) {
                     cb_clases.addItem(clasess.get(i).getNombreClase());
                     cb_examen.addItem(clasess.get(i).getNombreClase());
@@ -1333,7 +1334,7 @@ public class principal extends javax.swing.JFrame {
         // JOptionPane.showMessageDialog(null, itemList);
         // JOptionPane.showMessageDialog(null, clasess.get(cb_examenAlumno.getSelectedIndex()).getTests().get(itemList).getIdExamen());
         for (int i = 0; i < notes.size(); i++) {
-            System.out.println(notes.get(i).getIdExamen() + "es es del arrayList");
+          //  System.out.println(notes.get(i).getIdExamen() + "es es del arrayList");
         }
         Date actual2 = null;
         String formato = "dd/MM/yyyy";
@@ -1569,29 +1570,46 @@ public class principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnregresar_mostrarMouseClicked
 
     private void btn_mostrardatosAdmiinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_mostrardatosAdmiinMouseClicked
+        
         Admin.dispose();
         datosAdmin.pack();
         datosAdmin.setModal(true);
         datosAdmin.setLocationRelativeTo(null);
         datosAdmin.setVisible(true);
+        
     }//GEN-LAST:event_btn_mostrardatosAdmiinMouseClicked
 
     private void cb_mostrarClasesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_mostrarClasesItemStateChanged
 //        Jlist_Preguntas.setModel(new DefaultListModel<>());
 //        DefaultListModel<String> model = (DefaultListModel<String>) Jlist_Preguntas.getModel();
+    
+  
+
+        ArrayList<Examen> examenesss = new ArrayList();
+        List<Examen> ListExamenesss = Exams.find().into(new ArrayList<>());
+        examenesss = (ArrayList<Examen>) ListExamenesss;
+        
+        ArrayList<clasesita> clasesss = new ArrayList();
+        List<clasesita> ListClasesss = Clase.find().into(new ArrayList<>());
+        clasesss = (ArrayList<clasesita>) ListClasesss;
+        
+        ArrayList<Preguntas> questionss = new ArrayList();
+         List<Preguntas> ListPreguntass = Questions.find().into(new ArrayList<>());
+         questionss = (ArrayList<Preguntas>) ListPreguntass;
+         
         String aPreg = "", aExa = "";
-        for (int i = 0; i < questions.size(); i++) {
-            if (clasess.get(cb_mostrarClases.getSelectedIndex()).getIdClase() == questions.get(i).getIdClase()) {
-                aPreg += "•" + " Id Pregunta: " + " " + questions.get(i).getIdQ() + " /Titulo: " + questions.get(i).getTitulo() + "\n";
+        for (int i = 0; i < questionss.size(); i++) {
+            if (clasess.get(cb_mostrarClases.getSelectedIndex()).getIdClase() == questionss.get(i).getIdClase()) {
+                aPreg += "•" + " Id Pregunta: " + " " + questionss.get(i).getIdQ() + " /Titulo: " + questionss.get(i).getTitulo() + "\n";
                 aPreg += "\n";
             }
         }
         //model.addElement(aPreg+"\n");
         area7.setText(aPreg);
         //  Jlist_Preguntas.setModel(model);
-        for (int i = 0; i < clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().size(); i++) {
-            if (clasess.get(cb_mostrarClases.getSelectedIndex()).getIdClase() == clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getIdClase()) {
-                aExa += "•" + " Id Examen: " + " " + clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getIdExamen() + " /N° Preguntas: " + clasess.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getCantPreguntas() + "\n";
+        for (int i = 0; i < clasesss.get(cb_mostrarClases.getSelectedIndex()).getTests().size(); i++) {
+            if (clasesss.get(cb_mostrarClases.getSelectedIndex()).getIdClase() == clasesss.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getIdClase()) {
+                aExa += "•" + " Id Examen: " + " " + clasesss.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getIdExamen() + " /N° Preguntas: " + clasesss.get(cb_mostrarClases.getSelectedIndex()).getTests().get(i).getCantPreguntas() + "\n";
                 aExa += "\n";
             }
         }
